@@ -1,4 +1,4 @@
-# RUBY-RABBITMQ
+# Ruby-RabbitMQ
 
 ### Run RabbitMQ container
 
