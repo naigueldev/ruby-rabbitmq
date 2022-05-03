@@ -6,14 +6,21 @@
 docker run -d --hostname my-rabbit --name rabbit13 -p 8080:15672 -p 5672:5672 -p 25676:25676 rabbitmq:3-management
 ```
 
+### Exchanges types:
+
+* Default
+* Direct
+* Fanout
+* Topic
+
 ### Run the consumer:
 
-`ruby receive.rb`
+`ruby <exchange_type>_exchange/consumer.rb`
 
 
-### Run the publisher:
+### Run the producer:
 
-`ruby send.rb`
+`ruby <exchange_type>_exchange/producer.rb`
 
 References: 
 - [RabbitMQ with docker](https://medium.com/xp-inc/rabbitmq-com-docker-conhecendo-o-admin-cc81f3f6ac3b)

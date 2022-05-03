@@ -3,7 +3,7 @@ require "bunny"
 require "date"
 require "json"
 
-connection = Bunny.new(automatically_recover: false)
+connection = Bunny.new
 connection.start
 
 @channel = connection.create_channel
@@ -14,7 +14,7 @@ def send_message(message, routing_key)
 end
 
 message = { message: "Hello World! #{DateTime.now}" }.to_json
-routing_key = "world.politics.internet.cybercime"
+routing_key = "world.politics.internet.cybercime.brazil.south"
 send_message(message, routing_key)
 
 routing_key = "world.sports"

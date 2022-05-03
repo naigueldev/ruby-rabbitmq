@@ -3,29 +3,32 @@ require "bunny"
 require "date"
 require "json"
 
-connection = Bunny.new(automatically_recover: false)
+connection = Bunny.new()
 connection.start
 
-@channel = connection.create_channel
+channel = connection.create_channel
+@exchange = channel.direct("images-microservice")
 
-def send_message(queue, message)
-  @channel.default_exchange.publish(message, routing_key: queue.name)
+def send_message(routing_key, message)
+  @exchange.publish(message, routing_key: routing_key)
   puts " [x] Sent #{message}"
 end
 
-queue = @channel.queue("images.archive")
+queue = channel.queue("queue-images-archive")
+message = { message: "Hello World! #{DateTime.now}", queue: queue.name }.to_json
+routing_key = "images.archive"
+send_message(routing_key, message)
+
+queue = channel.queue("queue-images-crop")
 message = { message: "Hello World! #{DateTime.now}", queue: queue.name }.to_json
 
-send_message(queue, message)
+routing_key = "images.crop"
+send_message(routing_key, message)
 
-queue = @channel.queue("images.crop")
+queue = channel.queue("queue-images-resize")
 message = { message: "Hello World! #{DateTime.now}", queue: queue.name }.to_json
 
-send_message(queue, message)
-
-queue = @channel.queue("images.resize")
-message = { message: "Hello World! #{DateTime.now}", queue: queue.name }.to_json
-
-send_message(queue, message)
+routing_key = "images.resize"
+send_message(routing_key, message)
 
 connection.close
